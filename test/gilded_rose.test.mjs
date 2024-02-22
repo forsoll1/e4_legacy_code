@@ -34,9 +34,21 @@ RULES:
     const items = gildedRose.updateQuality();
     expect(items[0].sellIn).to.equal(9);
   });
+  
+  test("Random item sellIn decreases in the negatives", () => {
+    const gildedRose = new Shop([new Item("TestItem", -2, 48)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].sellIn).to.equal(-3);
+  });
 
   test("Aged Brie quality increases if below 50", () => {
     const gildedRose = new Shop([new Item("Aged Brie", 2, 49)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(50);
+  });
+
+  test("Aged Brie quality increase isn't affected by negative sellIn", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", -2, 49)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(50);
   });
