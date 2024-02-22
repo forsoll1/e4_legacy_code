@@ -57,7 +57,6 @@ export class Shop {
         }
       }
     }
-
     return this.items;
   }
 }
