@@ -87,6 +87,18 @@ RULES:
     const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 4, 49)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(50);
-  });  
+  });
+
+  test("Sulfuras quality will not decrease or increase", () => {
+    const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 4, 49)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(49);
+  });
+
+  test("Sulfuras sellIn will not decrease or increase", () => {
+    const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 4, 49)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].sellIn).to.equal(4);
+  });
 
 });
