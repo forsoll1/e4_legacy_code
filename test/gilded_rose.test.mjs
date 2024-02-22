@@ -15,6 +15,8 @@ RULES:
 - Sulfuras sellIn value does not decrease
 - Sulfuras quality does not decrease
 - All other items sellIn value decreases by -1 with update
+- At negative sellIn value random item quality decreases by 2
+- At negative sellIn value Brie quality increases by 2
 */
 
   test("Random item quality decreases", () => {
@@ -35,10 +37,10 @@ RULES:
     expect(items[0].sellIn).to.equal(9);
   });
   
-  test("Random item sellIn decreases in the negatives", () => {
+  test("Random item negative sellIn value decreases quality by 2", () => {
     const gildedRose = new Shop([new Item("TestItem", -2, 48)]);
     const items = gildedRose.updateQuality();
-    expect(items[0].sellIn).to.equal(-3);
+    expect(items[0].quality).to.equal(46);
   });
 
   test("Aged Brie quality increases if below 50", () => {
@@ -47,10 +49,10 @@ RULES:
     expect(items[0].quality).to.equal(50);
   });
 
-  test("Aged Brie quality increase isn't affected by negative sellIn", () => {
-    const gildedRose = new Shop([new Item("Aged Brie", -2, 49)]);
+  test("Aged Brie quality increases by 2 if sellIn < 0", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", -2, 40)]);
     const items = gildedRose.updateQuality();
-    expect(items[0].quality).to.equal(50);
+    expect(items[0].quality).to.equal(42);
   });
 
   test("Aged Brie quality doesn't increase past 50", () => {
