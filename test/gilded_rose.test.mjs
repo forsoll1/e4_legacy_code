@@ -34,5 +34,23 @@ RULES:
     const items = gildedRose.updateQuality();
     expect(items[0].sellIn).to.equal(9);
   });
+  
+  test("Aged Brie quality increases if below 50", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", 2, 49)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(50);
+  });
+
+  test("Aged Brie quality doesn't increase past 50", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", 2, 50)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(50);
+  });
+
+  test("Aged Brie sellIn decreases", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", 11, 49)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].sellIn).to.equal(10);
+  });
 
 });
