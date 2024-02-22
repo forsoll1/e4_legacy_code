@@ -34,7 +34,7 @@ RULES:
     const items = gildedRose.updateQuality();
     expect(items[0].sellIn).to.equal(9);
   });
-  
+
   test("Aged Brie quality increases if below 50", () => {
     const gildedRose = new Shop([new Item("Aged Brie", 2, 49)]);
     const items = gildedRose.updateQuality();
@@ -52,5 +52,41 @@ RULES:
     const items = gildedRose.updateQuality();
     expect(items[0].sellIn).to.equal(10);
   });
+
+  test("Backstage Pass sellIn decreases", () => {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 11, 49)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].sellIn).to.equal(10);
+  });
+
+  test("Backstage Pass quality zero if sellIn < 0", () => {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", -1, 40)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(0);
+  });
+
+  test("Backstage Pass quality increases by one if sellIn > 10", () => {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 11, 40)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(41);
+  });
+
+  test("Backstage Pass quality increases by two if 4 < sellIn < 11", () => {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 10, 40)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(42);
+  });
+
+  test("Backstage Pass quality increases by three if sellIn < 5", () => {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 4, 40)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(43);
+  });
+
+  test("Backstage Pass quality will not increase past 50", () => {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 4, 49)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(50);
+  });  
 
 });
