@@ -14,6 +14,7 @@ export class Shop {
   updateQuality() {
     for (const item of this.items) {
       if(item.name === "Sulfuras, Hand of Ragnaros") {continue}
+
       if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert") {
         if (item.quality > 0) {
           this.decreaseQuality(item);
@@ -22,6 +23,7 @@ export class Shop {
       if (item.name === "Aged Brie" && item.quality < 50) {this.increaseQuality(item)}
       if (item.name === "Backstage passes to a TAFKAL80ETC concert") {
         this.handleBackstagePass(item)
+        continue
       }
       this.decreaseSellIn(item);
       
@@ -49,13 +51,14 @@ export class Shop {
     item.sellIn -= 1
   }
   handleBackstagePass(item){
-    if(item.sellIn <= 0){item.quality = 0; return}
-
     let currentQuality = item.quality
     if(item.sellIn > 10){ currentQuality += 1 }
     else if(item.sellIn > 5) { currentQuality += 2 }
     else currentQuality += 3
     if(currentQuality > 50) {currentQuality = 50}
     item.quality = currentQuality
+
+    this.decreaseSellIn(item);
+    if(item.sellIn <= 0){item.quality = 0; return}
   }
 }
