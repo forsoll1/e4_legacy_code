@@ -21,7 +21,6 @@ export class Shop {
       } 
       if (item.name === "Aged Brie" && item.quality < 50) {this.increaseQuality(item)}
       if (item.name === "Backstage passes to a TAFKAL80ETC concert") {
-        if(item.quality < 50) {this.increaseQuality(item)}
         this.handleBackstagePass(item)
       }
       this.decreaseSellIn(item);
@@ -44,8 +43,8 @@ export class Shop {
     }
     return this.items;
   }
-  increaseQuality(item){
-    item.quality += 1;
+  increaseQuality(item, val = 1){
+    item.quality += val;
   }
   decreaseQuality(item){
     item.quality -= 1;
@@ -54,11 +53,11 @@ export class Shop {
     item.sellIn -= 1
   }
   handleBackstagePass(item){
-    if (item.sellIn < 11 && item.quality < 50) {
-      this.increaseQuality(item);
-    }
-    if (item.sellIn < 6 && item.quality < 50) {
-      this.increaseQuality(item);
-    }
+    let currentQuality = item.quality
+    if(item.sellIn > 10){ currentQuality += 1 }
+    else if(item.sellIn > 5) { currentQuality += 2 }
+    else currentQuality += 3
+    if(currentQuality > 50) {currentQuality = 50}
+    item.quality = currentQuality
   }
 }
