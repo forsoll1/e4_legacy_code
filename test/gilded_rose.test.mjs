@@ -18,6 +18,10 @@ RULES:
 - At negative sellIn value random item quality decreases by 2
 - At negative sellIn value Brie quality increases by 2
 */
+  test("Shop initialized without argument has an empty array", () => {
+    const gildedRose = new Shop();
+    expect(gildedRose.items).to.deep.equal([])
+  });
 
   test("Random item quality decreases", () => {
     const gildedRose = new Shop([new Item("TestItem", 1, 50)]);
