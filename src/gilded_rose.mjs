@@ -18,22 +18,19 @@ export class Shop {
         if (item.quality > 0) {
           this.decreaseQuality(item);
         }
-      } else {
-        if (item.quality < 50) {
-          this.increaseQuality(item);
-          if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
-            this.handleBackstagePass(item)
-          }
-        }
+      } 
+      if (item.name === "Aged Brie" && item.quality < 50) {this.increaseQuality(item)}
+      if (item.name === "Backstage passes to a TAFKAL80ETC concert") {
+        if(item.quality < 50) {this.increaseQuality(item)}
+        this.handleBackstagePass(item)
       }
       this.decreaseSellIn(item);
+      
       if (item.sellIn < 0) {
         if (item.name != "Aged Brie") {
           if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
             if (item.quality > 0) {
-              if (item.name != "Sulfuras, Hand of Ragnaros") {
-                this.decreaseQuality(item);
-              }
+              this.decreaseQuality(item);
             }
           } else {
             item.quality = 0;
