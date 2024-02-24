@@ -13,18 +13,23 @@ export class Shop {
   
   updateQuality() {
     for (const item of this.items) {
-      if(item.name === "Sulfuras, Hand of Ragnaros") {continue}
+      if(item.name === "Sulfuras, Hand of Ragnaros") { continue }
+      if (item.name === "Backstage passes to a TAFKAL80ETC concert") {
+        this.handleBackstagePass(item)
+        continue
+      }
+      if (item.name === "Aged Brie" && item.quality < 50) {
+        this.handleAgedBrie(item)
+        continue
+      }
 
       if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert") {
         if (item.quality > 0) {
           this.decreaseQuality(item);
         }
       } 
-      if (item.name === "Aged Brie" && item.quality < 50) {this.increaseQuality(item)}
-      if (item.name === "Backstage passes to a TAFKAL80ETC concert") {
-        this.handleBackstagePass(item)
-        continue
-      }
+
+
       this.decreaseSellIn(item);
       
       if (item.sellIn < 0) {
@@ -32,17 +37,13 @@ export class Shop {
           if (item.quality > 0) {
             this.decreaseQuality(item);
           }
-        } else {
-          if (item.quality < 50) {
-            this.increaseQuality(item);
-          }
         }
       }
     }
     return this.items;
   }
-  increaseQuality(item, val = 1){
-    item.quality += val;
+  increaseQuality(item){
+    item.quality += 1;
   }
   decreaseQuality(item){
     item.quality -= 1;
@@ -50,15 +51,26 @@ export class Shop {
   decreaseSellIn(item){
     item.sellIn -= 1
   }
+  handleAgedBrie(item){
+    this.increaseQuality(item)
+    this.decreaseSellIn(item)
+    if(item.sellIn < 0){
+      this.increaseQuality(item)
+    }
+  }
+
+
   handleBackstagePass(item){
+    this.backstagePassQuality(item)
+    this.decreaseSellIn(item);
+    if(item.sellIn <= 0){item.quality = 0; return}
+  }
+  backstagePassQuality(item){
     let currentQuality = item.quality
     if(item.sellIn > 10){ currentQuality += 1 }
     else if(item.sellIn > 5) { currentQuality += 2 }
     else currentQuality += 3
     if(currentQuality > 50) {currentQuality = 50}
     item.quality = currentQuality
-
-    this.decreaseSellIn(item);
-    if(item.sellIn <= 0){item.quality = 0; return}
   }
 }
