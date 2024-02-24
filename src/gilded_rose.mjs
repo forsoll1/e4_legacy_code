@@ -27,12 +27,8 @@ export class Shop {
       
       if (item.sellIn < 0) {
         if (item.name != "Aged Brie") {
-          if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
-            if (item.quality > 0) {
-              this.decreaseQuality(item);
-            }
-          } else {
-            item.quality = 0;
+          if (item.quality > 0) {
+            this.decreaseQuality(item);
           }
         } else {
           if (item.quality < 50) {
@@ -53,6 +49,8 @@ export class Shop {
     item.sellIn -= 1
   }
   handleBackstagePass(item){
+    if(item.sellIn <= 0){item.quality = 0; return}
+
     let currentQuality = item.quality
     if(item.sellIn > 10){ currentQuality += 1 }
     else if(item.sellIn > 5) { currentQuality += 2 }
