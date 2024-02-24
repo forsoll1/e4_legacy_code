@@ -20,7 +20,7 @@ RULES:
 */
 
   test("Random item quality decreases", () => {
-    const gildedRose = new Shop([new Item("TestItem", 2, 50)]);
+    const gildedRose = new Shop([new Item("TestItem", 1, 50)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(49);
   });
@@ -36,11 +36,23 @@ RULES:
     const items = gildedRose.updateQuality();
     expect(items[0].sellIn).to.equal(9);
   });
+
+  test("Random item sellIn decreases below zero", () => {
+    const gildedRose = new Shop([new Item("TestItem", 0, 48)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].sellIn).to.equal(-1);
+  });
   
-  test("Random item negative sellIn value decreases quality by 2", () => {
-    const gildedRose = new Shop([new Item("TestItem", -2, 48)]);
+  test("Random item zero & negative sellIn value decreases quality by 2", () => {
+    const gildedRose = new Shop([new Item("TestItem", 0, 48)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(46);
+  });
+
+  test("Random item zero & negative sellIn value decreases quality by 2 but not below 0", () => {
+    const gildedRose = new Shop([new Item("TestItem", -1, 0)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(0);
   });
 
   test("Aged Brie quality increases if below 50", () => {
@@ -49,10 +61,16 @@ RULES:
     expect(items[0].quality).to.equal(50);
   });
 
-  test("Aged Brie quality increases by 2 if sellIn < 0", () => {
-    const gildedRose = new Shop([new Item("Aged Brie", -2, 40)]);
+  test("Aged Brie quality increases by 2 if sellIn <= 0", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", 0, 40)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(42);
+  });
+
+  test("Aged Brie quality increases by 2 if sellIn <= 0 but not above 50", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", 0, 50)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(50);
   });
 
   test("Aged Brie quality doesn't increase past 50", () => {
@@ -62,19 +80,19 @@ RULES:
   });
 
   test("Aged Brie sellIn decreases", () => {
-    const gildedRose = new Shop([new Item("Aged Brie", 11, 49)]);
+    const gildedRose = new Shop([new Item("Aged Brie", 11, 30)]);
     const items = gildedRose.updateQuality();
     expect(items[0].sellIn).to.equal(10);
   });
 
   test("Backstage Pass sellIn decreases", () => {
-    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 11, 49)]);
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 11, 30)]);
     const items = gildedRose.updateQuality();
     expect(items[0].sellIn).to.equal(10);
   });
 
-  test("Backstage Pass quality zero if sellIn < 0", () => {
-    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", -1, 40)]);
+  test("Backstage Pass quality zero if sellIn <= 0", () => {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 0, 40)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(0);
   });
@@ -85,14 +103,14 @@ RULES:
     expect(items[0].quality).to.equal(41);
   });
 
-  test("Backstage Pass quality increases by two if 4 < sellIn < 11", () => {
-    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 10, 40)]);
+  test("Backstage Pass quality increases by two if 5 < sellIn < 11", () => {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 6, 40)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(42);
   });
 
-  test("Backstage Pass quality increases by three if sellIn < 5", () => {
-    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 4, 40)]);
+  test("Backstage Pass quality increases by three if sellIn < 6", () => {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 5, 40)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(43);
   });
@@ -113,6 +131,13 @@ RULES:
     const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 4, 49)]);
     const items = gildedRose.updateQuality();
     expect(items[0].sellIn).to.equal(4);
+  });
+
+    test("Sulfuras sellIn will not decrease or increase", () => {
+    const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", -1, 1)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].sellIn).to.equal(-1);
+    expect(items[0].quality).to.equal(1);
   });
 
 });
