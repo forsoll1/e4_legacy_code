@@ -162,4 +162,21 @@ RULES:
       expect(newItem.conjured).to.equal(true)
     })
 
+    test("Items have 'conjured' property (bool)", () => {
+      const newItem = new Item("TestItem", 10, 10)
+      expect(newItem.conjured).to.equal(false)
+    })
+
+    test("Conjured items quality decreases at 2x speed", () => {
+      const gildedRose = new Shop([new Item("TestItem", 1, 10, true)])
+      const items = gildedRose.updateQuality()
+      expect(items[0]).to.deep.include({sellIn: 0, quality:8, conjured:true})
+    })
+
+    test("Conjured items quality decreases at 4x normal speed when sellin 0 or less", () => {
+      const gildedRose = new Shop([new Item("TestItem", 0, 10, true)])
+      const items = gildedRose.updateQuality()
+      expect(items[0]).to.deep.include({sellIn: -1, quality:6, conjured:true})
+    })
+
 });
