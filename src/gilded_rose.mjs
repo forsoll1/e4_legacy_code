@@ -55,7 +55,7 @@ export class Shop {
   handleBackstagePass(item){
     this.backstagePassQuality(item)
     this.decreaseSellIn(item);
-    if(item.sellIn <= 0){item.quality = 0}
+    if(item.sellIn < 0){item.quality = 0}
   }
 
   backstagePassQuality(item){

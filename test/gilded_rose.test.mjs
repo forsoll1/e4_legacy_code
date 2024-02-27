@@ -59,34 +59,41 @@ RULES:
     expect(items[0].quality).to.equal(0);
   });
 
-  test("Aged Brie quality increases if below 50", () => {
-    const gildedRose = new Shop([new Item("Aged Brie", 2, 49)]);
-    const items = gildedRose.updateQuality();
-    expect(items[0].quality).to.equal(50);
-  });
-
-  test("Aged Brie quality increases by 2 if sellIn <= 0", () => {
+  test("Aged Brie quality increases by 2 if sellIn = 0", () => {
     const gildedRose = new Shop([new Item("Aged Brie", 0, 40)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(42);
   });
 
-  test("Aged Brie quality increases by 2 if sellIn <= 0 but not above 50", () => {
-    const gildedRose = new Shop([new Item("Aged Brie", 0, 50)]);
+  test("Aged Brie quality increases by 2 if sellIn < 0", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", -1, 40)]);
     const items = gildedRose.updateQuality();
-    expect(items[0].quality).to.equal(50);
+    expect(items[0].quality).to.equal(42);
+  });
+
+  test("Aged Brie quality increases by 1 if sellIn > 0", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", 1, 30)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0]).to.deep.include({sellIn:0,quality:31});
   });
 
   test("Aged Brie quality doesn't increase past 50", () => {
-    const gildedRose = new Shop([new Item("Aged Brie", 2, 50)]);
+    const gildedRose = new Shop([new Item("Aged Brie", -1, 49)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(50);
   });
 
-  test("Aged Brie sellIn decreases", () => {
-    const gildedRose = new Shop([new Item("Aged Brie", 11, 30)]);
+  test("Aged Brie quality doesn't increase past 50 ver 2", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", 1, 50)]);
     const items = gildedRose.updateQuality();
-    expect(items[0].sellIn).to.equal(10);
+    expect(items[0].quality).to.equal(50);
+  });
+
+
+  test("Aged Brie sellIn decreases", () => {
+    const gildedRose = new Shop([new Item("Aged Brie", 0, 30)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].sellIn).to.equal(-1);
   });
 
   test("Backstage Pass sellIn decreases", () => {
@@ -95,8 +102,14 @@ RULES:
     expect(items[0].sellIn).to.equal(10);
   });
 
-  test("Backstage Pass quality zero if sellIn <= 0", () => {
+  test("Backstage Pass quality zero if sellIn = 0", () => {
     const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 0, 40)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).to.equal(0);
+  });
+
+  test("Backstage Pass quality zero if sellIn < 0", () => {
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", -1, 40)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(0);
   });
@@ -114,7 +127,7 @@ RULES:
   });
 
   test("Backstage Pass quality increases by three if sellIn < 6", () => {
-    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 5, 40)]);
+    const gildedRose = new Shop([new Item("Backstage passes to a TAFKAL80ETC concert", 1, 40)]);
     const items = gildedRose.updateQuality();
     expect(items[0].quality).to.equal(43);
   });
