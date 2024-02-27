@@ -32,7 +32,8 @@ export class Shop {
     if(item.quality < 50) { item.quality += 1 };
   }
   decreaseQuality(item){
-    if(item.quality > 0){ item.quality -= 1 };
+    let decreaseVal = item.conjured? 2 : 1;
+    if(item.quality > 0){ item.quality -= decreaseVal };
   }
   decreaseSellIn(item){
     item.sellIn -= 1

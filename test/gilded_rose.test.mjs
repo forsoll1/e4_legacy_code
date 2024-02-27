@@ -162,7 +162,7 @@ RULES:
       expect(newItem.conjured).to.equal(true)
     })
 
-    test("Items have 'conjured' property (bool)", () => {
+    test("Item 'conjured' property false when not specified otherwise", () => {
       const newItem = new Item("TestItem", 10, 10)
       expect(newItem.conjured).to.equal(false)
     })
