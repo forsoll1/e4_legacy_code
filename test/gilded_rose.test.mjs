@@ -157,4 +157,9 @@ RULES:
     expect(items[0].quality).to.equal(1);
   });
 
+    test("Items have 'conjured' property (bool)", () => {
+      const newItem = new Item("TestItem", 10, 10, true)
+      expect(newItem.conjured).to.equal(true)
+    })
+
 });
